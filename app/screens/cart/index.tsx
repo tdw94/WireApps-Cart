@@ -1,12 +1,19 @@
 import React, {useMemo} from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {colors} from '../../constants/colors';
 import {useCart} from '../../context/Cart';
 import {getCartItemCountAndTotal} from '../../helpers/products';
 import CartCard from '../../components/cart-card';
 
 const CartScreen = () => {
-  const {cartProducts} = useCart();
+  const {cartProducts, emptyCart} = useCart();
 
   const cartItems = useMemo(() => {
     return getCartItemCountAndTotal(cartProducts);
@@ -14,6 +21,24 @@ const CartScreen = () => {
 
   const checkout = () => {
     // todo
+  };
+
+  const confirmEmpty = () => {
+    Alert.alert('Empty cart?', 'Do you want to empty the cart?', [
+      {
+        text: 'No',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {
+        text: 'Yes',
+        onPress: emptyCart,
+      },
+    ]);
+  };
+
+  const onPressEmptyCart = () => {
+    confirmEmpty();
   };
 
   return (
@@ -34,14 +59,32 @@ const CartScreen = () => {
             ]}
           />
           {cartItems.noOfItem > 0 ? (
-            <View style={styles.cartButtonContainer}>
-              <TouchableOpacity style={styles.cartButton} onPress={checkout}>
-                <Text style={styles.goToCart} numberOfLines={1}>
-                  Checkout ✅ ({cartItems.noOfItem} items, {cartItems.total}{' '}
-                  GBP)
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <>
+              <View style={styles.cartButtonContainer}>
+                <View style={styles.detailsContainer}>
+                  <Text style={styles.totalText}>
+                    Total Qty: {cartItems.noOfItem} items
+                  </Text>
+                  <Text style={styles.totalText}>
+                    Total Price: {cartItems.total} GBP
+                  </Text>
+                </View>
+                <View style={styles.row}>
+                  <TouchableOpacity
+                    style={styles.cartButton}
+                    onPress={checkout}>
+                    <Text style={styles.buttonText} numberOfLines={1}>
+                      Checkout ✅
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.cartButton, styles.emptyCartButton]}
+                    onPress={onPressEmptyCart}>
+                    <Text style={styles.buttonText}>Empty cart 🗑️</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </>
           ) : null}
         </>
       )}
@@ -52,6 +95,29 @@ const CartScreen = () => {
 export default CartScreen;
 
 const styles = StyleSheet.create({
+  totalText: {
+    fontWeight: '700',
+    fontSize: 18,
+    paddingBottom: 5,
+  },
+  detailsContainer: {
+    marginLeft: 10,
+    marginVertical: 10,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+    marginHorizontal: 10,
+  },
+  emptyCartText: {
+    fontSize: 18,
+  },
+  emptyCartButton: {
+    backgroundColor: colors.red,
+    marginLeft: 10,
+  },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -66,14 +132,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomPadding: {
-    paddingBottom: 120,
+    paddingBottom: 140,
   },
   cartButton: {
     backgroundColor: colors.green,
     borderRadius: 10,
     padding: 15,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  goToCart: {
+  buttonText: {
     fontSize: 18,
     fontWeight: '600',
     color: colors.white,
@@ -81,11 +150,8 @@ const styles = StyleSheet.create({
   cartButtonContainer: {
     position: 'absolute',
     bottom: 0,
-    height: 100,
     backgroundColor: colors.white,
     width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
     borderColor: colors.grey,
     borderWidth: 1,
     borderTopLeftRadius: 10,
