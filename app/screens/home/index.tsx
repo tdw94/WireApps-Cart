@@ -17,19 +17,22 @@ import {getCartItemCountAndTotal} from '../../helpers/products';
 
 const HomeScreen = () => {
   const {navigate} = useNavigation<StackNavigationScreenProp>();
-  const {isLoading, products, getProductsList} = useProducts();
+  const {isLoading, products} = useProducts();
   const {cartProducts} = useCart();
 
+  // update and show cart total (price & qty) when cart is changing
   const cartItems = useMemo(() => {
     return getCartItemCountAndTotal(cartProducts);
   }, [cartProducts]);
 
+  // go to cart screen
   const goToCart = () => {
-    navigate('Cart', {mode: 'cart'});
+    navigate('Cart');
   };
 
   return (
     <View style={styles.screen}>
+      {/* show loading indicator until get data from endpoint */}
       {isLoading ? (
         <View style={styles.loader}>
           <ActivityIndicator
@@ -42,15 +45,14 @@ const HomeScreen = () => {
         <>
           <FlatList
             data={products}
-            refreshing={isLoading}
             renderItem={({item}) => <ProductCard data={item} />}
             keyExtractor={item => item.id}
             contentContainerStyle={[
               styles.container,
               cartItems.noOfItem > 0 && styles.bottomPadding,
             ]}
-            onRefresh={getProductsList}
           />
+          {/* show go to cart button (with cart total details), at least one product is in the cart */}
           {cartItems.noOfItem > 0 ? (
             <View style={styles.cartButtonContainer}>
               <TouchableOpacity style={styles.cartButton} onPress={goToCart}>

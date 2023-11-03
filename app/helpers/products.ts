@@ -1,5 +1,6 @@
 import {CartItem} from '../context/Cart';
 
+// get total qty and price for card list
 export const getCartItemCountAndTotal = (cartProducts: CartItem[]) => {
   let noOfItem = 0;
   let total = 0;

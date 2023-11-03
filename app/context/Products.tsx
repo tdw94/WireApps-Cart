@@ -29,9 +29,11 @@ export const ProductsProvider = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    // call to the endpoint when the app is starting
     getProductsList();
   }, []);
 
+  // call the endpoint
   const getProductsList = () => {
     setIsLoading(true);
     getProducts()

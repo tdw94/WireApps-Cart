@@ -15,24 +15,29 @@ const ProductCard = ({data}: ProductCardProps) => {
   const [count, setCount] = useState(1);
   const {addToCart} = useCart();
 
+  // increase qty
   const increment = () => {
     setCount(count + 1);
   };
 
+  // decrease qty
   const decrement = () => {
     if (count > 1) {
       setCount(count - 1);
     }
   };
 
+  // product details modal
   const onPressCard = () => {
     setModal(true);
   };
 
+  // set product size
   const onPressSize = (size: string) => {
     setSelectedSize(size);
   };
 
+  // add product to cart
   const onPressAddToCart = () => {
     addToCart(data, {
       size: selectedSize,
@@ -77,6 +82,7 @@ const ProductCard = ({data}: ProductCardProps) => {
                 </TouchableOpacity>
               ))}
             </View>
+            {/* The qty selector & add to cart buttons show only when the user selects a size */}
             {selectedSize ? (
               <>
                 <Text style={[styles.text, styles.qtyText]}>Qty: </Text>

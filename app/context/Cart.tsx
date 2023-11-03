@@ -29,6 +29,7 @@ export const CartContext = createContext<ContextProps | null>(null);
 export const CartProvider = ({children}: React.PropsWithChildren<unknown>) => {
   const [cartProducts, setCartProducts] = useState<CartItem[]>([]);
 
+  // add product to the cart
   const addToCart = (item: ProductItem, itemData: CartItemData) => {
     const clonedProducts = cloneDeep(cartProducts);
     // check for existing cart item with product id and size
@@ -36,16 +37,18 @@ export const CartProvider = ({children}: React.PropsWithChildren<unknown>) => {
       cp => cp.item.id === item.id && cp.itemData.size === itemData.size,
     );
 
-    // if found, add item count
+    // if found, add/increase product count
     if (existingItem) {
       existingItem.itemData.count += itemData.count;
+      // remove current product from the array
       const cartWithoutExisting = clonedProducts.filter(
         cp => cp.item.id !== item.id || cp.itemData.size !== itemData.size,
       );
+      // add modified product to the array
       cartWithoutExisting.push(existingItem);
       setCartProducts(cartWithoutExisting);
     } else {
-      // else, add to cart
+      // else, add product to cart
       clonedProducts.push({
         item,
         itemData,
@@ -54,6 +57,7 @@ export const CartProvider = ({children}: React.PropsWithChildren<unknown>) => {
     }
   };
 
+  // remove product from the cart
   const removeFromCart = (item: ProductItem, size: string) => {
     const clonedProducts = cloneDeep(cartProducts);
     setCartProducts(
@@ -63,6 +67,7 @@ export const CartProvider = ({children}: React.PropsWithChildren<unknown>) => {
     );
   };
 
+  // empty the cart
   const emptyCart = () => {
     setCartProducts([]);
   };

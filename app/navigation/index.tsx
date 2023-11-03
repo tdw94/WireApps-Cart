@@ -11,7 +11,7 @@ import {CartProvider} from '../context/Cart';
 
 type StackList = {
   Home: undefined;
-  Cart: {mode?: string};
+  Cart: undefined;
 };
 
 export type StackNavigationScreenProp = NativeStackNavigationProp<StackList>;

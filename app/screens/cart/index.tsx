@@ -15,14 +15,17 @@ import CartCard from '../../components/cart-card';
 const CartScreen = () => {
   const {cartProducts, emptyCart} = useCart();
 
+  // update and show cart total (price & qty) when cart is changing
   const cartItems = useMemo(() => {
     return getCartItemCountAndTotal(cartProducts);
   }, [cartProducts]);
 
+  // on press checkout button
   const checkout = () => {
     // todo
   };
 
+  // show confirmation message when emptying the cart
   const confirmEmpty = () => {
     Alert.alert('Empty cart?', 'Do you want to empty the cart?', [
       {
@@ -37,12 +40,14 @@ const CartScreen = () => {
     ]);
   };
 
+  // on press empty cart button
   const onPressEmptyCart = () => {
     confirmEmpty();
   };
 
   return (
     <View style={styles.screen}>
+      {/* show a message when cart is empty */}
       {!cartProducts.length ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>Your cart is empty.</Text>
@@ -58,6 +63,7 @@ const CartScreen = () => {
               cartItems.noOfItem > 0 && styles.bottomPadding,
             ]}
           />
+          {/* show cart total details, checkout and empty cart buttons, at least one product is in the cart */}
           {cartItems.noOfItem > 0 ? (
             <>
               <View style={styles.cartButtonContainer}>
