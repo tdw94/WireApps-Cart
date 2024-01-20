@@ -8,17 +8,16 @@ import {
   View,
 } from 'react-native';
 import {colors} from '../../constants/colors';
-import {useCart} from '../../context/Cart';
 import {getCartItemCountAndTotal} from '../../helpers/products';
 import CartCard from '../../components/cart-card';
+import {useCart} from '../../redux/hooks/useCart';
 
 const CartScreen = () => {
-  const {cartProducts, emptyCart} = useCart();
-
+  const {cart, emptyCart} = useCart();
   // update and show cart total (price & qty) when cart is changing
   const cartItems = useMemo(() => {
-    return getCartItemCountAndTotal(cartProducts);
-  }, [cartProducts]);
+    return getCartItemCountAndTotal(cart);
+  }, [cart]);
 
   // on press checkout button
   const checkout = () => {
@@ -48,14 +47,14 @@ const CartScreen = () => {
   return (
     <View style={styles.screen}>
       {/* show a message when cart is empty */}
-      {!cartProducts.length ? (
+      {!cart.length ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>Your cart is empty.</Text>
         </View>
       ) : (
         <>
           <FlatList
-            data={cartProducts}
+            data={cart}
             renderItem={({item}) => <CartCard data={item} />}
             keyExtractor={item => `${item.itemData.size}_${item.item.id}`}
             contentContainerStyle={[
@@ -105,6 +104,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 18,
     paddingBottom: 5,
+    color: colors.black,
   },
   detailsContainer: {
     marginLeft: 10,
@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 18,
     textAlign: 'center',
+    color: colors.black,
   },
   screen: {
     flex: 1,

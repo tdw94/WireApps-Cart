@@ -1,11 +1,15 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
+import {Provider} from 'react-redux';
+import {store} from './app/redux/store';
 import AppContainer from './app/navigation';
 
 function App(): JSX.Element {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <AppContainer />
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
     </SafeAreaView>
   );
 }

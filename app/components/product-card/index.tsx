@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../../constants/colors';
-import {ProductItem} from '../../context/Products';
 import ProductDetails from '../modals/ProductDetails';
-import {useCart} from '../../context/Cart';
+import {useCart} from '../../redux/hooks/useCart';
+import {ProductItem} from '../../constants/types';
 
 interface ProductCardProps {
   data: ProductItem;
@@ -39,9 +39,12 @@ const ProductCard = ({data}: ProductCardProps) => {
 
   // add product to cart
   const onPressAddToCart = () => {
-    addToCart(data, {
-      size: selectedSize,
-      count,
+    addToCart({
+      item: data,
+      itemData: {
+        size: selectedSize,
+        count,
+      },
     });
     setSelectedSize('');
     setCount(1);
@@ -137,6 +140,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontWeight: '700',
     fontSize: 20,
+    color: colors.black,
   },
   itemSelectorContainer: {
     flexDirection: 'row',
@@ -158,11 +162,13 @@ const styles = StyleSheet.create({
   },
   text: {
     paddingBottom: 5,
+    color: colors.black,
   },
   price: {
     fontWeight: '700',
     fontSize: 16,
     paddingBottom: 5,
+    color: colors.black,
   },
   priceContainer: {
     flexDirection: 'row',
