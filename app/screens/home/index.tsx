@@ -8,22 +8,26 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useProducts} from '../../context/Products';
 import ProductCard from '../../components/product-card';
 import {colors} from '../../constants/colors';
-import {useCart} from '../../context/Cart';
 import {StackNavigationScreenProp} from '../../navigation';
 import {getCartItemCountAndTotal} from '../../helpers/products';
+import {useCart} from '../../redux/hooks/useCart';
+import {useGetProductsQuery} from '../../api/apiSlice';
 
 const HomeScreen = () => {
   const {navigate} = useNavigation<StackNavigationScreenProp>();
-  const {isLoading, products} = useProducts();
-  const {cartProducts} = useCart();
+  const {
+    data: products,
+    isLoading,
+    // isError,
+  } = useGetProductsQuery();
+  const {cart} = useCart();
 
   // update and show cart total (price & qty) when cart is changing
   const cartItems = useMemo(() => {
-    return getCartItemCountAndTotal(cartProducts);
-  }, [cartProducts]);
+    return getCartItemCountAndTotal(cart);
+  }, [cart]);
 
   // go to cart screen
   const goToCart = () => {
@@ -75,6 +79,7 @@ const styles = StyleSheet.create({
   loader: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   screen: {
     flex: 1,

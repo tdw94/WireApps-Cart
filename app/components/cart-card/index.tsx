@@ -8,7 +8,9 @@ import {
   View,
 } from 'react-native';
 import {colors} from '../../constants/colors';
-import {CartItem, useCart} from '../../context/Cart';
+import {CartItem} from '../../constants/types';
+import {useCart} from '../../redux/hooks/useCart';
+import commonStyles from '../../styles';
 
 interface CartCardProps {
   data: CartItem;
@@ -26,7 +28,8 @@ const CartCard = ({data}: CartCardProps) => {
       },
       {
         text: 'Yes',
-        onPress: () => removeFromCart(data.item, data.itemData.size),
+        onPress: () =>
+          removeFromCart({item: data.item, size: data.itemData.size}),
       },
     ]);
   };
@@ -47,7 +50,9 @@ const CartCard = ({data}: CartCardProps) => {
             <Text style={[styles.price, styles.text]}>
               {data?.item?.price?.amount} {data?.item?.price?.currency}
             </Text>
-            <Text style={styles.text} numberOfLines={1}>
+            <Text
+              style={[styles.text, commonStyles.capitalizeText]}
+              numberOfLines={1}>
               Color: {data?.item?.colour}
             </Text>
             <View style={styles.row}>
@@ -67,7 +72,9 @@ const CartCard = ({data}: CartCardProps) => {
             </View>
             <View style={styles.deleteItemContainer}>
               <View style={styles.row}>
-                <Text>Total: </Text>
+                <Text style={[styles.text, styles.totalPriceText]}>
+                  Total:{' '}
+                </Text>
                 <Text style={styles.price}>
                   {Number(data?.item.price?.amount) * data.itemData.count}{' '}
                   {data?.item.price?.currency}
@@ -87,6 +94,9 @@ const CartCard = ({data}: CartCardProps) => {
 export default CartCard;
 
 const styles = StyleSheet.create({
+  totalPriceText: {
+    paddingBottom: 0,
+  },
   separator: {
     paddingHorizontal: 5,
   },
@@ -104,6 +114,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontWeight: '700',
     fontSize: 20,
+    color: colors.black,
   },
   button: {
     width: 40,
@@ -116,10 +127,12 @@ const styles = StyleSheet.create({
   },
   text: {
     paddingBottom: 5,
+    color: colors.black,
   },
   price: {
     fontWeight: '700',
     fontSize: 16,
+    color: colors.black,
   },
   priceContainer: {
     flexDirection: 'row',
