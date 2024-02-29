@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import {colors} from '../../constants/colors';
-import {ProductItem} from '../../context/Products';
+import {ProductItem} from '../../constants/types';
 
 interface ProductDetailsProps {
   data: ProductItem;
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontWeight: '700',
     fontSize: 20,
+    color: colors.black,
   },
   sizeButton: {
     marginRight: 10,
@@ -95,6 +96,7 @@ const styles = StyleSheet.create({
   modalSizeText: {
     fontSize: 16,
     textAlign: 'center',
+    color: colors.black,
   },
   sizeContainer: {
     flexDirection: 'row',
@@ -105,6 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     paddingBottom: 10,
+    color: colors.black,
   },
   modalImage: {
     width: 200,
@@ -116,6 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '600',
     textAlign: 'center',
+    color: colors.black,
   },
   modalContainer: {
     backgroundColor: colors.white,
@@ -128,5 +132,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
     paddingBottom: 10,
+    color: colors.black,
   },
 });

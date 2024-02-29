@@ -1,4 +1,4 @@
-import {CartItem} from '../context/Cart';
+import {CartItem} from '../constants/types';
 
 // get total qty and price for card list
 export const getCartItemCountAndTotal = (cartProducts: CartItem[]) => {
